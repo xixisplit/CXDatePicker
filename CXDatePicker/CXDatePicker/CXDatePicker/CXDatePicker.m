@@ -79,10 +79,10 @@
     self.minDate = minDate;
     self.selectDate = selectDate ? : [NSDate date];
     self.format = format;
-    [view addSubview:self];
-    [self addSubview:self.pickerView];
     [self initFormatIndex];
     [self initDataArray:format];
+    [view addSubview:self];
+    [self addSubview:self.pickerView];
     [self initSelectDate:format animated:NO];
 
     [self show];

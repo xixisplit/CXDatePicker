@@ -30,10 +30,10 @@
 
 -(void)buttonClick
 {
-    
     CXDatePicker *picker = [[CXDatePicker alloc] init];
     picker.titleLabel.text = @"请选择时间";
-    [picker showDatePicker:self.view maxDate:[NSDate dateWithString:@"2021-01-02 00:00:00" withFormat:nil] minDate:[NSDate dateWithString:@"2001-09-01 00:00:00" withFormat:nil] format:@"yyyy-MM-dd" selectDate:[NSDate date] determineBlock:^(CXDatePicker *datePicker, NSDictionary *selectDate) {
+    picker.indexArray = [@[@"MM",@"dd",@"yyyy"] mutableCopy];
+    [picker showDatePicker:self.view maxDate:[NSDate dateWithString:@"2021-01-02 00:00:00" withFormat:nil] minDate:[NSDate dateWithString:@"2001-09-10 00:00:00" withFormat:nil] format:@"yyyy-MM-dd" selectDate:[NSDate date] determineBlock:^(CXDatePicker *datePicker, NSDictionary *selectDate) {
         
         NSLog(@"%@",selectDate);
         

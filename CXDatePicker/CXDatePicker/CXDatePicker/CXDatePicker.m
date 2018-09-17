@@ -11,9 +11,8 @@
 
 #define toolHight 40
 #define pickerViewHight selfHight-toolHight
-#define selfHight 300
+#define selfHight (self.frame.size.width == 320 ? 250:300)
 #define buttonwidth 40
-
 @interface CXDatePicker()<UIPickerViewDelegate,UIPickerViewDataSource>
 
 

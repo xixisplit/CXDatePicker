@@ -371,6 +371,9 @@
     }
     // 获取到当前选择的年月日
     NSDate *currentDate = [NSDate dateWithString:[NSString stringWithFormat:@"%@-%@-%@ %@:%@",year,month,day,hours,minutes] withFormat:@"yyyy-MM-dd HH:mm"];
+    if (!currentDate) {
+        return;
+    }
     
     int maxResults = [NSDate compareday:self.maxDate withDate:currentDate];
     self.selectDate = currentDate;

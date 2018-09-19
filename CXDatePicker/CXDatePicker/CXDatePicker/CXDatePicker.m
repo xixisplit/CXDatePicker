@@ -13,6 +13,9 @@
 #define pickerViewHight selfHight-toolHight
 #define selfHight (self.frame.size.width == 320 ? 250:300)
 #define buttonwidth 40
+#define infinite49 (self.infiniteScroll ? 49 : 0)
+#define infinite100 (self.infiniteScroll ? 100 : 0)
+
 @interface CXDatePicker()<UIPickerViewDelegate,UIPickerViewDataSource>
 
 
@@ -125,7 +128,7 @@
     if([format containsString:@"yyyy"])
     {
     NSString *selectYear = [NSDate stringWhitDate:self.selectDate withFormat:@"yyyy"];
-    NSUInteger selectYearIndex = [self.yearArray indexOfObject:selectYear];
+    NSInteger selectYearIndex = [self.yearArray indexOfObject:selectYear] + self.yearArray.count * infinite49;
     [self.pickerView selectRow:selectYearIndex inComponent:[self.indexArray indexOfObject:@"yyyy"] animated:animated];
     }
     
@@ -133,7 +136,7 @@
     if([format containsString:@"MM"])
     {
         NSString *selectmonth = [NSDate stringWhitDate:self.selectDate withFormat:@"MM"];
-        NSUInteger selectmonthIndex = [self.monthArray indexOfObject:selectmonth];
+        NSInteger selectmonthIndex = [self.monthArray indexOfObject:selectmonth] + self.monthArray.count * infinite49;
         [self.pickerView selectRow:selectmonthIndex inComponent:[self.indexArray indexOfObject:@"MM"] animated:animated];
     }
     //日
@@ -141,14 +144,14 @@
     if([format containsString:@"dd"])
     {
     NSString *selectDay = [NSDate stringWhitDate:self.selectDate withFormat:@"dd"];
-    NSUInteger selectDayIndex = [self.dayArray indexOfObject:selectDay];
+    NSInteger selectDayIndex = [self.dayArray indexOfObject:selectDay] + self.dayArray.count * infinite49;
     [self.pickerView selectRow:selectDayIndex inComponent:[self.indexArray indexOfObject:@"dd"] animated:animated];
     }
     //时
     if([format containsString:@"HH"])
     {
     NSString *selecthours = [NSDate stringWhitDate:self.selectDate withFormat:@"HH"];
-    NSUInteger selecthoursIndex = [self.hoursArray indexOfObject:selecthours];
+        NSInteger selecthoursIndex = [self.hoursArray indexOfObject:selecthours] + self.hoursArray.count * infinite49;
     [self.pickerView selectRow:selecthoursIndex inComponent:[self.indexArray indexOfObject:@"HH"] animated:animated];
     }
     
@@ -156,7 +159,7 @@
     if([format containsString:@"mm"])
     {
         NSString *selectminutes = [NSDate stringWhitDate:self.selectDate withFormat:@"mm"];
-        NSUInteger selectminutesIndex = [self.minutesArray indexOfObject:selectminutes];
+        NSInteger selectminutesIndex = [self.minutesArray indexOfObject:selectminutes] + self.minutesArray.count * infinite49;
         [self.pickerView selectRow:selectminutesIndex inComponent:[self.indexArray indexOfObject:@"mm"] animated:animated];
     }
 }
@@ -235,7 +238,7 @@
     }
     
     NSArray *tmpArray = [self.dateDict objectForKey:self.indexArray[component]];
-    NSString *tmpString = tmpArray[row];
+    NSString *tmpString = tmpArray[row%tmpArray.count];
     
     NSString *index = self.indexArray[component];
     NSString *unit = nil;
@@ -260,6 +263,7 @@
     label.textAlignment = NSTextAlignmentCenter;
     label.font = self.textFont ? : [UIFont systemFontOfSize:18];
     label.textColor = self.textColor ? : [UIColor blackColor];
+    label.lineBreakMode = NSLineBreakByCharWrapping;
     return label;
 }
 
@@ -267,13 +271,13 @@
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     [self maxMinConfig];
-    NSUInteger dayIndex = [self.indexArray indexOfObject:@"dd"];
-    NSUInteger yearIndex = [self.indexArray indexOfObject:@"yyyy"];
-    NSUInteger monthIndex = [self.indexArray indexOfObject:@"MM"];
+    NSInteger dayIndex = [self.indexArray indexOfObject:@"dd"];
+    NSInteger yearIndex = [self.indexArray indexOfObject:@"yyyy"];
+    NSInteger monthIndex = [self.indexArray indexOfObject:@"MM"];
 
-    NSString *day = self.dayArray[[pickerView selectedRowInComponent:dayIndex]];
-    NSString *month = self.monthArray[[pickerView selectedRowInComponent:monthIndex]];
-    NSString *year = self.yearArray[[pickerView selectedRowInComponent:yearIndex]];
+    NSString *day = self.dayArray[[pickerView selectedRowInComponent:dayIndex]% self.dayArray.count];
+    NSString *month = self.monthArray[[pickerView selectedRowInComponent:monthIndex]% self.monthArray.count];
+    NSString *year = self.yearArray[[pickerView selectedRowInComponent:yearIndex] %self.yearArray.count];
     
     
     if(component == dayIndex || component == yearIndex || component == monthIndex)
@@ -299,12 +303,20 @@
             if([year intValue]%4 == 0)
             {
                 //闰年.29天.
-                [self.pickerView selectRow:[self.dayArray indexOfObject:@"29"] inComponent:dayIndex animated:YES];
+                if (self.infiniteScroll) {
+                    [self.pickerView selectRow:[self.dayArray indexOfObject:day] + self.dayArray.count * infinite49 inComponent:dayIndex animated:NO];
+                }
+                
+                [self.pickerView selectRow:[self.dayArray indexOfObject:@"29"] + self.dayArray.count * infinite49 inComponent:dayIndex animated:YES];
                 
             }
             else
             {
-                [self.pickerView selectRow:[self.dayArray indexOfObject:@"28"] inComponent:dayIndex animated:YES];
+                if(self.infiniteScroll)
+                {
+                    [self.pickerView selectRow:[self.dayArray indexOfObject:day] + self.dayArray.count * infinite49 inComponent:dayIndex animated:NO];
+                }
+                [self.pickerView selectRow:[self.dayArray indexOfObject:@"28"] + self.dayArray.count * infinite49 inComponent:dayIndex animated:YES];
                 // 28天
             }
         }
@@ -313,7 +325,11 @@
             // 30天
             if([day intValue] == 31)
             {
-            [self.pickerView selectRow:[self.dayArray indexOfObject:@"30"] inComponent:dayIndex animated:YES];
+                if (self.infiniteScroll) {
+                    [self.pickerView selectRow:[self.dayArray indexOfObject:day] + self.dayArray.count * infinite49 inComponent:dayIndex animated:NO];
+                }
+            
+                [self.pickerView selectRow:[self.dayArray indexOfObject:@"30"] + self.dayArray.count * infinite49 inComponent:dayIndex animated:YES];
             }
         }
     }
@@ -322,7 +338,7 @@
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     NSArray *tmpArray = [self.dateDict objectForKey:self.indexArray[component]];
-    return tmpArray.count;
+    return tmpArray.count + tmpArray.count * (infinite100);
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -332,16 +348,36 @@
 
 - (void)maxMinConfig
 {
-    NSUInteger dayIndex = [self.indexArray indexOfObject:@"dd"];
-    NSUInteger yearIndex = [self.indexArray indexOfObject:@"yyyy"];
-    NSUInteger monthIndex = [self.indexArray indexOfObject:@"MM"];
-    NSString *day = self.dayArray[[self.pickerView selectedRowInComponent:dayIndex]];
-    NSString *month = self.monthArray[[self.pickerView selectedRowInComponent:monthIndex]];
-    NSString *year = self.yearArray[[self.pickerView selectedRowInComponent:yearIndex]];
+    NSInteger dayIndex = [self.indexArray indexOfObject:@"dd"];
+    NSInteger yearIndex = [self.indexArray indexOfObject:@"yyyy"];
+    NSInteger monthIndex = [self.indexArray indexOfObject:@"MM"];
+    NSInteger hoursIndex = [self.indexArray indexOfObject:@"HH"];
+    NSInteger minutesIndex = [self.indexArray indexOfObject:@"mm"];
+    
+    NSString *day = self.dayArray[[self.pickerView selectedRowInComponent:dayIndex] %self.dayArray.count];
+    NSString *month = self.monthArray[[self.pickerView selectedRowInComponent:monthIndex] %self.monthArray.count];
+    NSString *year = self.yearArray[[self.pickerView selectedRowInComponent:yearIndex] %self.yearArray.count];
+    
+    NSString *minutes = @"00";
+    NSString *hours = @"00";
+    
+    if (hoursIndex > -1 && hoursIndex < 62)
+    {
+        hours = self.hoursArray[[self.pickerView selectedRowInComponent:hoursIndex] %self.hoursArray.count];
+    }
+    if (minutesIndex > -1 && minutesIndex < 62) {
+        
+        minutes = self.minutesArray[[self.pickerView selectedRowInComponent:minutesIndex] %self.minutesArray.count];
+    }
     // 获取到当前选择的年月日
-    NSDate *currentDate = [NSDate dateWithString:[NSString stringWithFormat:@"%@-%@-%@",year,month,day] withFormat:@"yyyy-MM-dd"];
+    NSDate *currentDate = [NSDate dateWithString:[NSString stringWithFormat:@"%@-%@-%@ %@:%@",year,month,day,hours,minutes] withFormat:@"yyyy-MM-dd HH:mm"];
     
     int maxResults = [NSDate compareday:self.maxDate withDate:currentDate];
+    self.selectDate = currentDate;
+    if(self.infiniteScroll)
+    {
+        [self initSelectDate:self.format animated:NO];
+    }
     if (maxResults == 2)
     {
         self.selectDate = self.maxDate;

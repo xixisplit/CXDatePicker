@@ -35,7 +35,7 @@ indexArray @[@"yyyy","MM",@"dd",@"HH",@"mm"]; 自由错乱顺序组合 默认正
  */
 
 @property (nonatomic, strong)  NSMutableArray*indexArray;
-
+@property(nonatomic, assign) BOOL infiniteScroll; //是否无限滚动
 @property (nonatomic, strong) UIFont *textFont; // 文字字体
 @property (nonatomic, strong) UIColor *textColor; //文字颜色
 

@@ -33,15 +33,41 @@ typedef void(^cancelBlock)(CXDatePicker *datePicker);
 indexArray @[@"yyyy","MM",@"dd",@"HH",@"mm"]; 自由错乱顺序组合 默认正常顺序
  //通过配置此数组.可以打乱顺序进行时间展示
  */
-
 @property (nonatomic, strong)  NSMutableArray*indexArray;
-@property(nonatomic, assign) BOOL infiniteScroll; //是否无限滚动
-@property (nonatomic, strong) UIFont *textFont; // 文字字体
-@property (nonatomic, strong) UIColor *textColor; //文字颜色
 
-@property (nonatomic, strong) UIButton *determineButton; //确定按钮 right
-@property (nonatomic, strong) UIButton *cancelButton; //取消按钮lefy
-@property (nonatomic, strong) UIView *toolView; //工具栏
-@property (nonatomic, strong) UILabel *titleLabel; //@"请选择日期"
+/**
+ 是否无限滚动
+ */
+@property(nonatomic, assign) BOOL infiniteScroll; //
+
+/**
+ 文字字体
+ */
+@property (nonatomic, strong) UIFont *textFont; //
+
+/**
+ 文字颜色
+ */
+@property (nonatomic, strong) UIColor *textColor; //
+
+/**
+ 确定按钮 right
+ */
+@property (nonatomic, strong) UIButton *determineButton; //
+
+/**
+ 取消按钮left
+ */
+@property (nonatomic, strong) UIButton *cancelButton; //
+
+/**
+ 工具栏
+ */
+@property (nonatomic, strong) UIView *toolView; //
+
+/**
+ @"请选择日期"
+ */
+@property (nonatomic, strong) UILabel *titleLabel; //
 
 @end

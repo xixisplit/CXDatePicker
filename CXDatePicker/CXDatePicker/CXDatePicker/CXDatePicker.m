@@ -399,27 +399,27 @@
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     if([self.indexArray containsObject:@"yyyy"])
     {
-        [dict setObject:self.yearArray[[self.pickerView selectedRowInComponent:[self.indexArray indexOfObject:@"yyyy"]]] forKey:@"yyyy"];
+        [dict setObject:self.yearArray[[self.pickerView selectedRowInComponent:[self.indexArray indexOfObject:@"yyyy"]] %self.yearArray.count] forKey:@"yyyy"];
     }
     
     if([self.indexArray containsObject:@"MM"])
     {
-        [dict setObject:self.monthArray[[self.pickerView selectedRowInComponent:[self.indexArray indexOfObject:@"MM"]]] forKey:@"MM"];
+        [dict setObject:self.monthArray[[self.pickerView selectedRowInComponent:[self.indexArray indexOfObject:@"MM"]] %self.monthArray.count] forKey:@"MM"];
     }
     
     if([self.indexArray containsObject:@"dd"])
     {
-        [dict setObject:self.dayArray[[self.pickerView selectedRowInComponent:[self.indexArray indexOfObject:@"dd"]]] forKey:@"dd"];
+        [dict setObject:self.dayArray[[self.pickerView selectedRowInComponent:[self.indexArray indexOfObject:@"dd"]] %self.dayArray.count] forKey:@"dd"];
     }
     
     if([self.indexArray containsObject:@"HH"])
     {
-        [dict setObject:self.hoursArray[[self.pickerView selectedRowInComponent:[self.indexArray indexOfObject:@"HH"]]] forKey:@"HH"];
+        [dict setObject:self.hoursArray[[self.pickerView selectedRowInComponent:[self.indexArray indexOfObject:@"HH"]] %self.hoursArray.count] forKey:@"HH"];
     }
     
     if([self.indexArray containsObject:@"mm"])
     {
-        [dict setObject:self.minutesArray[[self.pickerView selectedRowInComponent:[self.indexArray indexOfObject:@"mm"]]] forKey:@"mm"];
+        [dict setObject:self.minutesArray[[self.pickerView selectedRowInComponent:[self.indexArray indexOfObject:@"mm"]] %self.minutesArray.count] forKey:@"mm"];
     }
     return dict;
 }

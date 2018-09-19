@@ -34,9 +34,10 @@
     picker.titleLabel.text = @"请选择时间";
     picker.infiniteScroll = YES;
 //    picker.indexArray = [@[@"MM",@"dd",@"yyyy"] mutableCopy];
-    [picker showDatePicker:self.view maxDate:[NSDate dateWithString:@"2021-01-02 15:59:53" withFormat:nil] minDate:[NSDate dateWithString:@"2001-09-10 00:00:00" withFormat:nil] format:@"yyyy-MM-dd HH:mm" selectDate:[NSDate date] determineBlock:^(CXDatePicker *datePicker, NSDictionary *selectDate) {
+    [picker showDatePicker:self.view maxDate:[NSDate dateWithString:@"2021-01-02 15:59:53" withFormat:nil] minDate:[NSDate dateWithString:@"2001-09-10 00:00:00" withFormat:nil] format:@"yyyy-MM-dd" selectDate:[NSDate date] determineBlock:^(CXDatePicker *datePicker, NSDictionary *selectDate) {
         
         NSLog(@"%@",selectDate);
+        NSLog(@"%@年%@月%@日%@时%@分",[selectDate objectForKey:@"yyyy"],[selectDate objectForKey:@"MM"],[selectDate objectForKey:@"dd"],[selectDate objectForKey:@"HH"],[selectDate objectForKey:@"mm"]);
         
     } cancelBlock:^(CXDatePicker *datePicker) {
         

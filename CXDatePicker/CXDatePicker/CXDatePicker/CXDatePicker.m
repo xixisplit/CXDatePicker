@@ -428,8 +428,10 @@
  */
 - (void)determineButtonClick
 {
-    
+    if(self.determineBlock)
+    {
     self.determineBlock(self, [self getSelectDate]);
+    }
     [self hidden];
 }
 //取消

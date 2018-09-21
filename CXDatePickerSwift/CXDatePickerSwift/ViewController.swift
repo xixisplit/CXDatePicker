@@ -34,9 +34,11 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
     @objc func buttonClick() {
         
         let picker = CXPickerSwift.init()
-        picker.infiniteScroll = true
+//        picker.infiniteScroll = true
         
         picker.showDatePicker(view: self.view, maxDate: NSDate.init(string: "2021-01-02 15:59:53", withFormat: nil), minDate: NSDate.init(string: "2001-09-10 00:00:00", withFormat: nil), format: "yyyy-MM-dd", selectDate: NSDate(), determineBlock: { (picker, dateDict) in
+            
+            print(NSString.init(format: "---%@", dateDict))
             
         }) { (picker) in
             

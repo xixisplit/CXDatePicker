@@ -11,81 +11,165 @@ import UIKit
 
 class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
     /// 工具栏高度
-   private  let toolHight :CGFloat = 40
+    private  let toolHight :CGFloat = 40
     ///本view 高度
-  private  let selfHight:CGFloat = UIScreen.main.bounds.size.width == 320 ? 250 : 300
+    private  let selfHight:CGFloat = UIScreen.main.bounds.size.width == 320 ? 250 : 300
     /// 选择器高度
     /// - Returns: NSInteger
-   private func pickerViewHight() -> NSInteger {
+    private func pickerViewHight() -> NSInteger {
         return NSInteger(selfHight - toolHight)
     }
     /// 按钮高度
-   private let buttonwidth = 40
+    private let buttonwidth:CGFloat = 40
     
     /// 循环49
     ///
     /// - Returns: NSInteger
-   private func infinite49() -> NSInteger {
+    private func infinite49() -> NSInteger {
         return (self.infiniteScroll == true) ? 49 : 0
     }
     
     /// 循环100
     ///
     /// - Returns: NSInteger
-   private func infinite100() -> NSInteger {
+    private func infinite100() -> NSInteger {
         return (self.infiniteScroll == true) ? 100 : 0
     }
-
+    
     ///确认按钮回调
     typealias swiftDetermineBlock = (_ picker: CXPickerSwift,_ selectDareDict:NSDictionary) -> Void
     ///取消按钮回调
     typealias swiftCancelBlock = (_ picker: CXPickerSwift) -> Void
-    
     // 开放属性
-   open var infiniteScroll:Bool? //是否无限滚动
-   open var indexArray = NSMutableArray.init() //index数组
-   open var textColor:UIColor? //文字颜色
-   open var textFont:UIFont? //文字字体
+    open var infiniteScroll:Bool? //是否无限滚动
+    open var indexArray = NSMutableArray.init() //index数组
+    open var textColor:UIColor? //文字颜色
+    open var textFont:UIFont? //文字字体
+    
+    /// 标题
+    open lazy var titleLabel:UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.black
+        label.textAlignment = NSTextAlignment.center
+        label.font = UIFont.systemFont(ofSize: 18)
+        return label
+    }()
     
     // 内部属性
-   private var internalDetermineBlock:swiftDetermineBlock?
-   private var internalCancelBlock:swiftCancelBlock?
+    private var internalDetermineBlock:swiftDetermineBlock?
+    private var internalCancelBlock:swiftCancelBlock?
+    //    @property (nonatomic, strong) NSMutableArray *yearArray;
+    private var yearArray = NSMutableArray.init()
+    //    @property (nonatomic, strong) NSMutableArray *monthArray;
+    private var monthArray = NSMutableArray.init()
+    //    @property (nonatomic, strong) NSMutableArray *dayArray;
+    private var dayArray = NSMutableArray.init()
+    //    @property (nonatomic, strong) NSMutableArray *hoursArray;
+    private var hoursArray = NSMutableArray.init()
+    //    @property (nonatomic, strong) NSMutableArray *minutesArray;
+    private var minutesArray = NSMutableArray.init()
+    
+    private var maxDate:NSDate? //显示的最大日期
+    private var minDate:NSDate? //显示的最小日期
+    private var format:NSString? //显示的 formater
     
     
-   private var pickerView : UIPickerView {
+    private var selectDate:NSDate?//选中的日期
+    private var dateDict = NSMutableDictionary.init()//数据字典
+    private lazy var pickerView:UIPickerView = {
         let picker = UIPickerView.init()
         picker.backgroundColor = UIColor.white
         picker.delegate = self as UIPickerViewDelegate
         picker.dataSource = self as UIPickerViewDataSource
         return picker
-    }
-//    @property (nonatomic, strong) NSMutableArray *yearArray;
-   private var yearArray = NSMutableArray.init()
-//    @property (nonatomic, strong) NSMutableArray *monthArray;
-   private var monthArray = NSMutableArray.init()
-//    @property (nonatomic, strong) NSMutableArray *dayArray;
-   private var dayArray = NSMutableArray.init()
-//    @property (nonatomic, strong) NSMutableArray *hoursArray;
-   private var hoursArray = NSMutableArray.init()
-//    @property (nonatomic, strong) NSMutableArray *minutesArray;
-   private var minutesArray = NSMutableArray.init()
+    }()
+    /// 确定按钮
+    private lazy var determineBtn:UIButton = {
+        let btn:UIButton = UIButton.init(frame: CGRect.init(x: (self.frame.size.width - buttonwidth - 10.0), y: 0, width: buttonwidth, height: toolHight))
+        btn.setTitle("确定", for: UIControlState.normal)
+        btn.setTitleColor(UIColor.black, for: UIControlState.normal)
+        btn.addTarget(self, action: #selector(determineBtnClick), for: UIControlEvents.touchUpInside)
+        return btn
+    }()
 
-   private var maxDate:NSDate? //显示的最大日期
-   private var minDate:NSDate? //显示的最小日期
-   private var format:NSString? //显示的 formater
+    /// 取消按钮
+    private lazy var cancelBtn:UIButton = {
+        let btn:UIButton = UIButton.init(frame: CGRect.init(x: 10.0, y: 0, width: buttonwidth, height: toolHight))
+        btn.setTitle("取消", for: UIControlState.normal)
+        btn.setTitleColor(UIColor.black, for: UIControlState.normal)
+        btn.addTarget(self, action: #selector(cancelBtnClick), for: UIControlEvents.touchUpInside)
+        return btn
+    }()
+
+    /// 工具栏
+    open lazy var toolView:UIView = {
+        let view = UIView.init(frame: CGRect.init(x: 0, y: 0, width: self.frame.size.width, height: toolHight))
+        view.backgroundColor = UIColor.white
+        return view
+    }()
+
+    @objc private func determineBtnClick(){
+        
+        if (self.internalDetermineBlock != nil) {
+            self.internalDetermineBlock!(self,self.getSelectDate())
+        }
+        self.Hidden()
+    }
+    
+    @objc private func cancelBtnClick(){
+        
+        if(self.internalCancelBlock != nil)
+        {
+            self.internalCancelBlock!(self)
+        }
+        self.Hidden()
+        
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.toolView.addSubview(self.cancelBtn)
+        self.toolView.addSubview(self.determineBtn)
+        self.toolView.addSubview(self.titleLabel)
+        self.titleLabel.sizeToFit()
+        self.titleLabel.center = self.toolView.center
+        self.addSubview(self.toolView)
+    }
     
     
-   private var selectDate:NSDate?//选中的日期
-   private var dateDict = NSMutableDictionary.init()//数据字典
+    /// 获取当前选中的日期
+    ///
+    /// - Returns: nsdict
+    private func getSelectDate()->NSMutableDictionary{
+        let dict = NSMutableDictionary()
+        if (self.indexArray.contains("yyyy")) {
+            dict.setObject(self.yearArray[(self.pickerView.selectedRow(inComponent: self.indexArray.index(of: "yyyy"))) % self.yearArray.count], forKey: "yyyy" as NSCopying)
+        }
+        
+        if (self.indexArray.contains("MM")) {
+            dict.setObject(self.monthArray[(self.pickerView.selectedRow(inComponent: self.indexArray.index(of: "MM"))) % self.monthArray.count], forKey: "MM" as NSCopying)
+        }
+        if (self.indexArray.contains("dd")) {
+            dict.setObject(self.dayArray[(self.pickerView.selectedRow(inComponent: self.indexArray.index(of: "dd"))) % self.dayArray.count], forKey: "dd" as NSCopying)
+        }
+        if (self.indexArray.contains("HH")) {
+            dict.setObject(self.hoursArray[(self.pickerView.selectedRow(inComponent: self.indexArray.index(of: "HH"))) % self.hoursArray.count], forKey: "HH" as NSCopying)
+        }
+        if (self.indexArray.contains("mm")) {
+            dict.setObject(self.minutesArray[(self.pickerView.selectedRow(inComponent: self.indexArray.index(of: "mm"))) % self.minutesArray.count], forKey: "mm" as NSCopying)
+        }
+        return dict
+    }
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor.red
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     
     open func showDatePicker(view withView:UIView, maxDate:NSDate? ,minDate:NSDate?,format:NSString?,selectDate:NSDate? ,determineBlock:swiftDetermineBlock?,cancelBlock:swiftCancelBlock?) {
         for view in withView.subviews {
@@ -110,14 +194,11 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
         self.initDateFormat(format: self.format)
         
         self.pickerView.frame = CGRect.init(x: 0, y: Int(toolHight), width: Int(withView.frame.size.width), height: pickerViewHight())
-
         withView.addSubview(self)
         self.addSubview(self.pickerView)
-        self.show()
         self.initSelect(format: self.format!, animated: false)
-        
+        self.show()
     }
-    
     
     /// 消失
     private func Hidden(){
@@ -138,8 +219,6 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
             
         }) { (finished) in
          
-            self.initSelect(format: self.format!, animated: false)
-            
         }
     }
     
@@ -367,7 +446,7 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
         }
         let minResults = NSDate.compareday(self.minDate! as Date, with: currentDate! as Date)
         if minResults == 1 {
-        self.selectDate = currentDate
+        self.selectDate = self.minDate
             self.initSelect(format: self.format!, animated: true)
         }
     }
@@ -390,23 +469,17 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
         
         var unit:NSString
         switch index {
-        case "yyyy":
-            unit = "年"
+        case "yyyy": unit = "年"
             break
-        case "MM":
-            unit = "月"
+        case "MM":  unit = "月"
             break
-        case "dd":
-            unit = "日"
+        case "dd": unit = "日"
             break
-        case "HH":
-            unit = "时"
+        case "HH": unit = "时"
             break
-        case "mm":
-            unit = "分"
+        case "mm": unit = "分"
             break
-        default:
-            unit = ""
+        default: unit = ""
         }
         
         label?.text = tmpStr.appending(unit as String)

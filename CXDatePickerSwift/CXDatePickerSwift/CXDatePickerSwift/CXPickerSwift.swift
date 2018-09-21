@@ -11,28 +11,28 @@ import UIKit
 
 class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
     /// 工具栏高度
-    let toolHight :CGFloat = 40
+   private  let toolHight :CGFloat = 40
     ///本view 高度
-    let selfHight:CGFloat = UIScreen.main.bounds.size.width == 320 ? 250 : 300
+  private  let selfHight:CGFloat = UIScreen.main.bounds.size.width == 320 ? 250 : 300
     /// 选择器高度
     /// - Returns: NSInteger
-    func pickerViewHight() -> NSInteger {
+   private func pickerViewHight() -> NSInteger {
         return NSInteger(selfHight - toolHight)
     }
     /// 按钮高度
-    let buttonwidth = 40
+   private let buttonwidth = 40
     
     /// 循环49
     ///
     /// - Returns: NSInteger
-    func infinite49() -> NSInteger {
+   private func infinite49() -> NSInteger {
         return (self.infiniteScroll == true) ? 49 : 0
     }
     
     /// 循环100
     ///
     /// - Returns: NSInteger
-    func infinite100() -> NSInteger {
+   private func infinite100() -> NSInteger {
         return (self.infiniteScroll == true) ? 100 : 0
     }
 
@@ -48,35 +48,35 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
    open var textFont:UIFont? //文字字体
     
     // 内部属性
-    var internalDetermineBlock:swiftDetermineBlock?
-    var internalCancelBlock:swiftCancelBlock?
+   private var internalDetermineBlock:swiftDetermineBlock?
+   private var internalCancelBlock:swiftCancelBlock?
     
     
-    var pickerView : UIPickerView {
-        let picker = UIPickerView()
+   private var pickerView : UIPickerView {
+        let picker = UIPickerView.init()
         picker.backgroundColor = UIColor.white
         picker.delegate = self as UIPickerViewDelegate
         picker.dataSource = self as UIPickerViewDataSource
         return picker
     }
 //    @property (nonatomic, strong) NSMutableArray *yearArray;
-    var yearArray = NSMutableArray.init()
+   private var yearArray = NSMutableArray.init()
 //    @property (nonatomic, strong) NSMutableArray *monthArray;
-    var monthArray = NSMutableArray.init()
+   private var monthArray = NSMutableArray.init()
 //    @property (nonatomic, strong) NSMutableArray *dayArray;
-    var dayArray = NSMutableArray.init()
+   private var dayArray = NSMutableArray.init()
 //    @property (nonatomic, strong) NSMutableArray *hoursArray;
-    var hoursArray = NSMutableArray.init()
+   private var hoursArray = NSMutableArray.init()
 //    @property (nonatomic, strong) NSMutableArray *minutesArray;
-    var minutesArray = NSMutableArray.init()
+   private var minutesArray = NSMutableArray.init()
 
-    var maxDate:NSDate? //显示的最大日期
-    var minDate:NSDate? //显示的最小日期
-    var format:NSString? //显示的 formater
+   private var maxDate:NSDate? //显示的最大日期
+   private var minDate:NSDate? //显示的最小日期
+   private var format:NSString? //显示的 formater
     
     
-    var selectDate:NSDate?//选中的日期
-    var dateDict = NSMutableDictionary.init()//数据字典
+   private var selectDate:NSDate?//选中的日期
+   private var dateDict = NSMutableDictionary.init()//数据字典
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -89,7 +89,7 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
     
     open func showDatePicker(view withView:UIView, maxDate:NSDate? ,minDate:NSDate?,format:NSString?,selectDate:NSDate? ,determineBlock:swiftDetermineBlock?,cancelBlock:swiftCancelBlock?) {
         for view in withView.subviews {
-            if (view.isKind(of:CXPickerSwift.layerClass))
+            if (view.isKind(of:CXPickerSwift.classForCoder()))
             {
                 return
             }
@@ -97,20 +97,25 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
         
         self.internalDetermineBlock = determineBlock
         self.internalCancelBlock = cancelBlock
-        self.frame = CGRect.init(x: 0, y: 0, width: withView.frame.size.width, height: withView.frame.size.height)
+        self.frame = CGRect.init(x: 0, y: 0, width: withView.frame.size.width, height: selfHight)
 
-        self.pickerView.frame = CGRect.init(x: 0, y: Int(toolHight), width: Int(withView.frame.size.width), height: pickerViewHight())
         self.maxDate = maxDate
         self.minDate = minDate
         self.selectDate = selectDate
+        if self.selectDate == nil {
+            self.selectDate = NSDate.init()
+        }
         self.format = format
         self.initFormatIndex()
         self.initDateFormat(format: self.format)
+        
+        self.pickerView.frame = CGRect.init(x: 0, y: Int(toolHight), width: Int(withView.frame.size.width), height: pickerViewHight())
+
+        withView.addSubview(self)
+        self.addSubview(self.pickerView)
+        self.show()
         self.initSelect(format: self.format!, animated: false)
         
-        withView.addSubview(self)
-        addSubview(pickerView)
-        self.show()
     }
     
     
@@ -132,6 +137,8 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
             self.frame = CGRect.init(x: 0, y: (self.superview?.frame.size.height)! - self.selfHight, width: self.frame.size.width, height: self.frame.size.height)
             
         }) { (finished) in
+         
+            self.initSelect(format: self.format!, animated: false)
             
         }
     }
@@ -145,10 +152,9 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
     {
         if (format.contains("yyyy")) {
             
-            let selectYear:NSString = NSDate.stringWhitDate(self.selectDate! as Date, withFormat: "yyyy")! as NSString
+            let selectYear:NSString = NSDate.stringWhitDate(self.selectDate! as Date?, withFormat: "yyyy")! as NSString
             let selectYearIndex:NSInteger = self.yearArray.index(of: selectYear) + self.yearArray.count * infinite49()
-            self.pickerView.selectRow(selectYearIndex, inComponent: self.indexArray.index(of: "yyyy"), animated: animated)
-            
+            self.pickerView.selectRow(selectYearIndex, inComponent:self.indexArray.index(of: "yyyy"), animated: animated)
         }
         if (format.contains("MM")) {
             
@@ -280,17 +286,17 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
                 if year.intValue & 4 == 0 {
                     
                     if self.infiniteScroll == true {
-                        self.pickerView .selectRow(self.dayArray.index(of: day) + self.dayArray.count * infinite49(), inComponent: dayIndex, animated: false)
+                        self.pickerView.selectRow(self.dayArray.index(of: day) + self.dayArray.count * infinite49(), inComponent: dayIndex, animated: false)
                     }
-                    self.pickerView .selectRow(self.dayArray.index(of: "29") + self.dayArray.count * infinite49(), inComponent: dayIndex, animated: true)
+                    self.pickerView.selectRow(self.dayArray.index(of: "29") + self.dayArray.count * infinite49(), inComponent: dayIndex, animated: true)
                 }else{
                     
                     
                     if self.infiniteScroll == true {
-                        self.pickerView .selectRow(self.dayArray.index(of: day) + self.dayArray.count * infinite49(), inComponent: dayIndex, animated: false)
+                        self.pickerView.selectRow(self.dayArray.index(of: day) + self.dayArray.count * infinite49(), inComponent: dayIndex, animated: false)
                     }
             
-                    self.pickerView .selectRow(self.dayArray.index(of: "28") + self.dayArray.count * infinite49(), inComponent: dayIndex, animated: true)
+                    self.pickerView.selectRow(self.dayArray.index(of: "28") + self.dayArray.count * infinite49(), inComponent: dayIndex, animated: true)
                     
                 }
                 break
@@ -300,9 +306,11 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
                 if day.intValue == 31 {
                     
                     if self.infiniteScroll == true {
-                        self.pickerView .selectRow(self.dayArray.index(of: day) + self.dayArray.count * infinite49(), inComponent: dayIndex, animated: false)
+                        self.pickerView.selectRow(self.dayArray.index(of: day) + self.dayArray.count * infinite49(), inComponent: dayIndex, animated: false)
+                        self.pickerView.reloadInputViews()
                     }
-                    self.pickerView .selectRow(self.dayArray.index(of: "30") + self.dayArray.count * infinite49(), inComponent: dayIndex, animated: true)
+                    self.pickerView.selectRow(self.dayArray.index(of: "30") + self.dayArray.count * infinite49(), inComponent: dayIndex, animated: true)
+                    self.pickerView.reloadInputViews()
                 }
                 break
             }
@@ -330,6 +338,7 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
         
         var hours:NSString = "00"
         var minutes:NSString = "00"
+    
         
         
         if (hoursIndex > -1 && hoursIndex < 62) {
@@ -342,14 +351,25 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
             minutes = self.minutesArray[self.pickerView.selectedRow(inComponent: minutesIndex)%self.minutesArray.count] as! NSString
         }
         
+        let currentDate = NSDate.init(string: NSString.init(format: "%@-%@-%@ %@:%@", year,month,day,hours,minutes) as String?, withFormat: "yyyy-MM-dd HH:mm")
+        if currentDate == nil {
+            return;
+        }
+        let maxResults = NSDate.compareday(self.maxDate! as Date, with: currentDate! as Date)
+        self.selectDate = currentDate
+        if self.infiniteScroll == true {
+            self.initSelect(format: self.format!, animated: false)
+        }
         
-//        @objc var currentDate = NSDate.date
-        
-        
-        
-        
-        
-        
+        if maxResults == 2 {
+            self.selectDate = self.maxDate
+            self.initSelect(format: self.format!, animated: true)
+        }
+        let minResults = NSDate.compareday(self.minDate! as Date, with: currentDate! as Date)
+        if minResults == 1 {
+        self.selectDate = currentDate
+            self.initSelect(format: self.format!, animated: true)
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -359,12 +379,11 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
     
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-    
-        var label:UILabel! = view as! UILabel
-        if label == nil {
+        var label:UILabel?
+        label = view as? UILabel
+        if (label == nil) {
             label = UILabel.init()
         }
-        
         let tmpArray:NSArray = self.dateDict.object(forKey: self.indexArray[component]) as! NSArray
         let tmpStr:NSString = tmpArray[row % tmpArray.count] as! NSString
         let index:NSString = self.indexArray[component] as! NSString
@@ -374,7 +393,7 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
         case "yyyy":
             unit = "年"
             break
-        case " MM":
+        case "MM":
             unit = "月"
             break
         case "dd":
@@ -392,9 +411,9 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
         
         label?.text = tmpStr.appending(unit as String)
         label?.textAlignment = NSTextAlignment.center
-        label.font = (self.textFont != nil) ? self.textFont : UIFont.systemFont(ofSize: 18)
-        label.textColor = (self.textColor != nil) ? self.textColor : UIColor.black
-        label.lineBreakMode = NSLineBreakMode.byCharWrapping
+        label?.font = (self.textFont != nil) ? self.textFont : UIFont.systemFont(ofSize: 18)
+        label?.textColor = (self.textColor != nil) ? self.textColor : UIColor.black
+        label?.lineBreakMode = NSLineBreakMode.byCharWrapping
         return label!
     }
     

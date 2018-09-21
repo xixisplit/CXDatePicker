@@ -9,29 +9,55 @@
 import UIKit
 
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let picker = CXPickerSwift.init(frame: CGRect.init(x: 0, y: 0, width: 100, height: 100))
+        let button = UIButton.init(frame: CGRect.init(x: 100, y: 300, width: 100, height: 50))
+        button.setTitle("按钮", for: UIControlState.normal)
+        button.backgroundColor = UIColor.red
+        button.addTarget(self, action:#selector(buttonClick), for: UIControlEvents.touchUpInside)
         
-        picker.showDatePicker(view: self.view, maxDate: nil, minDate: nil, format: "yyyy-MM", selectDate: nil, determineBlock: { (picker, dateDict) in
+        self.view.addSubview(button)
+        
+        
+        let picker = UIPickerView.init()
+        picker.backgroundColor = UIColor.red
+        picker.dataSource = self
+        picker.delegate = self
+        view.addSubview(picker)
+        picker.selectRow(5, inComponent: 0, animated: true)
+        
+    }
+
+    @objc func buttonClick() {
+        
+        let picker = CXPickerSwift.init()
+        picker.infiniteScroll = true
+        
+        picker.showDatePicker(view: self.view, maxDate: NSDate.init(string: "2021-01-02 15:59:53", withFormat: nil), minDate: NSDate.init(string: "2001-09-10 00:00:00", withFormat: nil), format: "yyyy-MM-dd", selectDate: NSDate(), determineBlock: { (picker, dateDict) in
             
         }) { (picker) in
             
         }
-        
-        
-        self.view.addSubview(picker)
-        // Do any additional setup after loading the view, typically from a nib.
     }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
 
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return "12342432"
+    }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return 10
+    }
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return  1
+    }
+    
 }
 

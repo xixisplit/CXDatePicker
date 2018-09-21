@@ -12,6 +12,9 @@
 		12D737C42153714000CEA387 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12D737C22153714000CEA387 /* Main.storyboard */; };
 		12D737C62153714100CEA387 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12D737C52153714100CEA387 /* Assets.xcassets */; };
 		12D737C92153714100CEA387 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12D737C72153714100CEA387 /* LaunchScreen.storyboard */; };
+		12D737D82153781100CEA387 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D737D72153781100CEA387 /* extension.swift */; };
+		12D737DA215379E000CEA387 /* CXPickerSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D737D9215379E000CEA387 /* CXPickerSwift.swift */; };
+		12D737E32153914500CEA387 /* NSDate+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D737E22153914500CEA387 /* NSDate+Extension.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +25,11 @@
 		12D737C52153714100CEA387 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		12D737C82153714100CEA387 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		12D737CA2153714100CEA387 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		12D737D72153781100CEA387 /* extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extension.swift; sourceTree = "<group>"; };
+		12D737D9215379E000CEA387 /* CXPickerSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CXPickerSwift.swift; sourceTree = "<group>"; };
+		12D737E02153914400CEA387 /* CXDatePickerSwift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CXDatePickerSwift-Bridging-Header.h"; sourceTree = "<group>"; };
+		12D737E12153914500CEA387 /* NSDate+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+Extension.h"; path = "CXDatePickerSwift/NSDate+Extension.h"; sourceTree = "<group>"; };
+		12D737E22153914500CEA387 /* NSDate+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+Extension.m"; path = "CXDatePickerSwift/NSDate+Extension.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,12 +62,25 @@
 		12D737BD2153714000CEA387 /* CXDatePickerSwift */ = {
 			isa = PBXGroup;
 			children = (
+				12D737E12153914500CEA387 /* NSDate+Extension.h */,
+				12D737E22153914500CEA387 /* NSDate+Extension.m */,
+				12D737D02153720100CEA387 /* CXDatePickerSwift */,
 				12D737BE2153714000CEA387 /* AppDelegate.swift */,
 				12D737C02153714000CEA387 /* ViewController.swift */,
 				12D737C22153714000CEA387 /* Main.storyboard */,
 				12D737C52153714100CEA387 /* Assets.xcassets */,
 				12D737C72153714100CEA387 /* LaunchScreen.storyboard */,
 				12D737CA2153714100CEA387 /* Info.plist */,
+				12D737E02153914400CEA387 /* CXDatePickerSwift-Bridging-Header.h */,
+			);
+			path = CXDatePickerSwift;
+			sourceTree = "<group>";
+		};
+		12D737D02153720100CEA387 /* CXDatePickerSwift */ = {
+			isa = PBXGroup;
+			children = (
+				12D737D72153781100CEA387 /* extension.swift */,
+				12D737D9215379E000CEA387 /* CXPickerSwift.swift */,
 			);
 			path = CXDatePickerSwift;
 			sourceTree = "<group>";
@@ -96,6 +117,7 @@
 				TargetAttributes = {
 					12D737BA2153714000CEA387 = {
 						CreatedOnToolsVersion = 9.4;
+						LastSwiftMigration = 0940;
 					};
 				};
 			};
@@ -135,6 +157,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12D737DA215379E000CEA387 /* CXPickerSwift.swift in Sources */,
+				12D737E32153914500CEA387 /* NSDate+Extension.m in Sources */,
+				12D737D82153781100CEA387 /* extension.swift in Sources */,
 				12D737C12153714000CEA387 /* ViewController.swift in Sources */,
 				12D737BF2153714000CEA387 /* AppDelegate.swift in Sources */,
 			);
@@ -280,6 +305,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = CXDatePickerSwift/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -288,6 +314,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.chenxi.CXDatePickerSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "CXDatePickerSwift/CXDatePickerSwift-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -297,6 +325,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = CXDatePickerSwift/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -305,6 +334,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.chenxi.CXDatePickerSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "CXDatePickerSwift/CXDatePickerSwift-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

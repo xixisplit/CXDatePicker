@@ -15,10 +15,14 @@ extension NSDate {
     ///   - dateString:
     ///   - format:
     /// - Returns:
-    class func dateWithStr(date dateString:NSString,format:NSString)->(NSDate) {
+    class func dateWithStr(date dateString:NSString,format:NSString?)->(NSDate?) {
         
         let formatter:DateFormatter = DateFormatter.init()
-        formatter.dateFormat = format.length > 0 ? format as String : "yyyy-MM-dd HH:mm:ss" as String
+        if (format == nil) {
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        }else{
+            formatter.dateFormat = format! as String
+        }
         let gmtDate:NSDate = formatter.date(from: dateString as String)! as NSDate
         return gmtDate
     }
@@ -30,10 +34,14 @@ extension NSDate {
     ///   - date:
     ///   - format:
     /// - Returns:
-    class func stringwithDate(date:NSDate ,format:NSString)->NSString{
+    class func stringwithDate(date:NSDate ,format:NSString?)->NSString{
         
         let formatter:DateFormatter = DateFormatter.init()
-        formatter.dateFormat = format.length > 0 ? format as String : "yyyy-MM-dd HH:mm:ss" as String
+        if (format == nil) {
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        }else{
+            formatter.dateFormat = format! as String
+        }
         let dateStr:NSString = formatter.string(from: date as Date) as NSString
         return dateStr
     }
@@ -75,4 +83,13 @@ extension NSDate {
         }
     }
     
+    class func compare(date date1:NSDate,date2:NSDate)->Int{
+        
+        let result:ComparisonResult = date1 .compare(date2 as Date)
+        switch result {
+        case .orderedDescending: return 1
+        case .orderedAscending: return 2
+        default: return 0
+        }
+    }
 }

@@ -231,34 +231,34 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
     {
         if (format.contains("yyyy")) {
             
-            let selectYear:NSString = NSDate.stringWhitDate(self.selectDate! as Date?, withFormat: "yyyy")! as NSString
+            let selectYear:NSString = NSDate.stringwithDate(date: self.selectDate!, format: "yyyy")
             let selectYearIndex:NSInteger = self.yearArray.index(of: selectYear) + self.yearArray.count * infinite49()
             self.pickerView.selectRow(selectYearIndex, inComponent:self.indexArray.index(of: "yyyy"), animated: animated)
         }
         if (format.contains("MM")) {
             
-            let selectmonth:NSString = NSDate.stringWhitDate(self.selectDate! as Date, withFormat: "MM")! as NSString
+            let selectmonth:NSString = NSDate.stringwithDate(date: self.selectDate!, format: "MM")
             let selectmonthIndex:NSInteger = self.monthArray.index(of: selectmonth) + self.monthArray.count * infinite49()
             self.pickerView.selectRow(selectmonthIndex, inComponent: self.indexArray.index(of: "MM"), animated: animated)
         }
         
         if (format.contains("dd")) {
             
-            let selectDay:NSString = NSDate.stringWhitDate(self.selectDate! as Date, withFormat: "dd")! as NSString
+            let selectDay:NSString = NSDate.stringwithDate(date: self.selectDate!, format: "dd")
             let selectDayIndex:NSInteger = self.dayArray.index(of: selectDay) + self.dayArray.count * infinite49()
             self.pickerView.selectRow(selectDayIndex, inComponent: self.indexArray.index(of: "dd"), animated: animated)
         }
         
         if (format.contains("HH")) {
             
-            let selecthours:NSString = NSDate.stringWhitDate(self.selectDate! as Date, withFormat: "HH")! as NSString
+            let selecthours:NSString = NSDate.stringwithDate(date: self.selectDate!, format: "HH")
             let selecthoursIndex:NSInteger = self.hoursArray.index(of: selecthours) + self.hoursArray.count * infinite49()
             self.pickerView.selectRow(selecthoursIndex, inComponent: self.indexArray.index(of: "HH"), animated: animated)
         }
         
         if (format.contains("mm")) {
             
-            let selectminutes:NSString = NSDate.stringWhitDate(self.selectDate! as Date, withFormat: "mm")! as NSString
+            let selectminutes:NSString = NSDate.stringwithDate(date: self.selectDate!, format: "mm")
             let selectminutesIndex:NSInteger = self.minutesArray.index(of: selectminutes) + self.minutesArray.count * infinite49()
             self.pickerView.selectRow(selectminutesIndex, inComponent: self.indexArray.index(of: "mm"), animated: animated)
         }
@@ -293,8 +293,8 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
         var max:Int,min:Int
 
         if self.maxDate != nil && self.minDate != nil {
-            let maxStr:NSString = NSDate.stringWhitDate(self.maxDate! as Date, withFormat: "yyyy")! as NSString
-            let minStr:NSString = NSDate.stringWhitDate(self.minDate! as Date, withFormat: "yyyy")! as NSString
+            let maxStr:NSString = NSDate.stringwithDate(date: self.maxDate!, format: "yyyy")
+            let minStr:NSString = NSDate.stringwithDate(date: self.minDate!, format: "yyyy")
 
             max = Int(maxStr.intValue);
             min = Int(minStr.intValue);
@@ -430,11 +430,12 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
             minutes = self.minutesArray[self.pickerView.selectedRow(inComponent: minutesIndex)%self.minutesArray.count] as! NSString
         }
         
-        let currentDate = NSDate.init(string: NSString.init(format: "%@-%@-%@ %@:%@", year,month,day,hours,minutes) as String?, withFormat: "yyyy-MM-dd HH:mm")
+        let currentDate = NSDate.dateWithStr(date: NSString.init(format: "%@-%@-%@ %@:%@", year,month,day,hours,minutes), format: "yyyy-MM-dd HH:mm")
+        
         if currentDate == nil {
             return;
         }
-        let maxResults = NSDate.compareday(self.maxDate! as Date, with: currentDate! as Date)
+        let maxResults = NSDate.compare(date: self.maxDate!, date2: currentDate!)
         self.selectDate = currentDate
         if self.infiniteScroll == true {
             self.initSelect(format: self.format!, animated: false)
@@ -444,7 +445,7 @@ class CXPickerSwift: UIView ,UIPickerViewDelegate,UIPickerViewDataSource{
             self.selectDate = self.maxDate
             self.initSelect(format: self.format!, animated: true)
         }
-        let minResults = NSDate.compareday(self.minDate! as Date, with: currentDate! as Date)
+        let minResults = NSDate.compare(date: self.minDate!, date2: currentDate!)
         if minResults == 1 {
         self.selectDate = self.minDate
             self.initSelect(format: self.format!, animated: true)

@@ -28,14 +28,16 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         picker.delegate = self
         view.addSubview(picker)
         picker.selectRow(5, inComponent: 0, animated: true)
-        
+    
+        print("%@",NSDate.weekwithDate(date: NSDate.init()))
     }
 
     @objc func buttonClick() {
         let picker = CXPickerSwift.init()
         picker.indexArray = ["MM","dd","yyyy"]
         picker.infiniteScroll = true
-        picker.showDatePicker(view: self.view, maxDate: NSDate.init(string: "2021-01-02 15:59:53", withFormat: nil), minDate: NSDate.init(string: "2001-09-10 00:00:00", withFormat: nil), format: "yyyy-MM-dd", selectDate: NSDate(), determineBlock: { (picker, dateDict) in
+        
+        picker.showDatePicker(view: self.view, maxDate: NSDate.dateWithStr(date: "2021-01-02 15:59:53", format: nil), minDate: NSDate.dateWithStr(date: "2001-01-02 15:59:53", format: nil), format: "yyyy-MM-dd", selectDate: NSDate(), determineBlock: { (picker, dateDict) in
             
             print(NSString.init(format: "---%@", dateDict))
             

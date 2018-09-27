@@ -30,6 +30,8 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         picker.selectRow(5, inComponent: 0, animated: true)
     
         print("222234\(NSDate.weekwithDate(date: NSDate.init()))")
+        
+        
     }
 
     @objc func buttonClick() {

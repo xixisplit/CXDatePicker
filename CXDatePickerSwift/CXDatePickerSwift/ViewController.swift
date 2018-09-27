@@ -29,7 +29,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         view.addSubview(picker)
         picker.selectRow(5, inComponent: 0, animated: true)
     
-        print("%@",NSDate.weekwithDate(date: NSDate.init()))
+        print("222234\(NSDate.weekwithDate(date: NSDate.init()))")
     }
 
     @objc func buttonClick() {
@@ -37,9 +37,9 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         picker.indexArray = ["MM","dd","yyyy"]
         picker.infiniteScroll = true
         
-        picker.showDatePicker(view: self.view, maxDate: NSDate.dateWithStr(date: "2021-01-02 15:59:53", format: nil), minDate: NSDate.dateWithStr(date: "2001-01-02 15:59:53", format: nil), format: "yyyy-MM-dd", selectDate: NSDate(), determineBlock: { (picker, dateDict) in
-            
-            print(NSString.init(format: "---%@", dateDict))
+        picker.showDatePicker(view: self.view, maxDate: NSDate.dateWithStr(date: "2021-01-02 15:59:53", format: nil), minDate: NSDate.dateWithStr(date: "2001-10-02 15:59:53", format: nil), format: "yyyy-MM-dd", selectDate: NSDate(), determineBlock: { (picker, dateDict) in
+
+            print("234234\(dateDict)")
             
         }) { (picker) in
             

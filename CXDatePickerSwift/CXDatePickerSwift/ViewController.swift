@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AVKit
 
 
 class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource {
@@ -22,9 +21,6 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         
         self.view.addSubview(button)
         
-//        AVAudioSession.sharedInstance().setCategory(<#T##category: String##String#>)
-        
-//        AVAudioSession.sharedInstance().setCategory = AVAudioSessionCategoryPlayback
         
         let picker = UIPickerView.init()
         picker.backgroundColor = UIColor.red
@@ -34,6 +30,8 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         picker.selectRow(5, inComponent: 0, animated: true)
     
         print("222234\(NSDate.weekwithDate(date: NSDate.init()))")
+        
+        
     }
 
     @objc func buttonClick() {

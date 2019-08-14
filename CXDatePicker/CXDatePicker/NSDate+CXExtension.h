@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSDate (Extension)
+@interface NSDate (CXExtension)
 
 /***
  * 获取当前时间

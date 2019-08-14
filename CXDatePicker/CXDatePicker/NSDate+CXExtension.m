@@ -6,9 +6,9 @@
 //  Copyright © 2016年 Transfar. All rights reserved.
 //
 
-#import "NSDate+Extension.h"
+#import "NSDate+CXExtension.h"
 
-@implementation NSDate (Extension)
+@implementation NSDate (CXExtension)
 
 + (NSString *)getCurrentTime
 {

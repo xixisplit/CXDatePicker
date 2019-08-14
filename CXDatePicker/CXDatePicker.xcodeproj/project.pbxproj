@@ -14,7 +14,7 @@
 		12EABBA4214F32FB00A314E8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12EABBA2214F32FB00A314E8 /* LaunchScreen.storyboard */; };
 		12EABBA7214F32FB00A314E8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EABBA6214F32FB00A314E8 /* main.m */; };
 		12EABBB0214F335300A314E8 /* CXDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EABBAF214F335300A314E8 /* CXDatePicker.m */; };
-		12EABBB3214F40E200A314E8 /* NSDate+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EABBB2214F40E200A314E8 /* NSDate+Extension.m */; };
+		12EABBB3214F40E200A314E8 /* NSDate+CXExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 12EABBB2214F40E200A314E8 /* NSDate+CXExtension.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,8 +30,8 @@
 		12EABBA6214F32FB00A314E8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		12EABBAE214F335300A314E8 /* CXDatePicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CXDatePicker.h; sourceTree = "<group>"; };
 		12EABBAF214F335300A314E8 /* CXDatePicker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CXDatePicker.m; sourceTree = "<group>"; };
-		12EABBB1214F40E200A314E8 /* NSDate+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+Extension.h"; path = "CXDatePicker/NSDate+Extension.h"; sourceTree = SOURCE_ROOT; };
-		12EABBB2214F40E200A314E8 /* NSDate+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+Extension.m"; path = "CXDatePicker/NSDate+Extension.m"; sourceTree = SOURCE_ROOT; };
+		12EABBB1214F40E200A314E8 /* NSDate+CXExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+CXExtension.h"; path = "CXDatePicker/NSDate+CXExtension.h"; sourceTree = SOURCE_ROOT; };
+		12EABBB2214F40E200A314E8 /* NSDate+CXExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+CXExtension.m"; path = "CXDatePicker/NSDate+CXExtension.m"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,8 +81,8 @@
 		12EABBAD214F332800A314E8 /* CXDatePicker */ = {
 			isa = PBXGroup;
 			children = (
-				12EABBB1214F40E200A314E8 /* NSDate+Extension.h */,
-				12EABBB2214F40E200A314E8 /* NSDate+Extension.m */,
+				12EABBB1214F40E200A314E8 /* NSDate+CXExtension.h */,
+				12EABBB2214F40E200A314E8 /* NSDate+CXExtension.m */,
 				12EABBAE214F335300A314E8 /* CXDatePicker.h */,
 				12EABBAF214F335300A314E8 /* CXDatePicker.m */,
 			);
@@ -160,7 +160,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				12EABBB0214F335300A314E8 /* CXDatePicker.m in Sources */,
-				12EABBB3214F40E200A314E8 /* NSDate+Extension.m in Sources */,
+				12EABBB3214F40E200A314E8 /* NSDate+CXExtension.m in Sources */,
 				12EABB9C214F32FA00A314E8 /* ViewController.m in Sources */,
 				12EABBA7214F32FB00A314E8 /* main.m in Sources */,
 				12EABB99214F32FA00A314E8 /* AppDelegate.m in Sources */,

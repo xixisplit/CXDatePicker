@@ -7,11 +7,11 @@
 //
 
 #import "CXDatePicker.h"
-#import "NSDate+Extension.h"
+#import "NSDate+CXExtension.h"
 
 #define toolHight 40
 #define pickerViewHight selfHight-toolHight
-#define selfHight (self.frame.size.width == 320 ? 250:300)
+#define selfHight (self.frame.size.width == 320 ? 200:250)
 #define buttonwidth 40
 #define infinite49 (self.infiniteScroll ? 49 : 0)
 #define infinite100 (self.infiniteScroll ? 100 : 0)
@@ -274,10 +274,19 @@
     NSInteger dayIndex = [self.indexArray indexOfObject:@"dd"];
     NSInteger yearIndex = [self.indexArray indexOfObject:@"yyyy"];
     NSInteger monthIndex = [self.indexArray indexOfObject:@"MM"];
-
-    NSString *day = self.dayArray[[pickerView selectedRowInComponent:dayIndex]% self.dayArray.count];
-    NSString *month = self.monthArray[[pickerView selectedRowInComponent:monthIndex]% self.monthArray.count];
-    NSString *year = self.yearArray[[pickerView selectedRowInComponent:yearIndex] %self.yearArray.count];
+    NSString *day = @"01";
+    NSString *month = @"01";
+    NSString *year = @"2019";
+    
+    if (dayIndex > -1 && dayIndex < 62) {
+        day = self.dayArray[[self.pickerView selectedRowInComponent:dayIndex] %self.dayArray.count];
+    }
+    if (monthIndex > -1 && monthIndex < 62) {
+        month = self.monthArray[[self.pickerView selectedRowInComponent:monthIndex] %self.monthArray.count];
+    }
+    if (yearIndex > -1 && yearIndex < 62) {
+        month = self.yearArray[[self.pickerView selectedRowInComponent:yearIndex] %self.yearArray.count];
+    }
     
     
     if(component == dayIndex || component == yearIndex || component == monthIndex)
@@ -354,12 +363,23 @@
     NSInteger hoursIndex = [self.indexArray indexOfObject:@"HH"];
     NSInteger minutesIndex = [self.indexArray indexOfObject:@"mm"];
     
-    NSString *day = self.dayArray[[self.pickerView selectedRowInComponent:dayIndex] %self.dayArray.count];
-    NSString *month = self.monthArray[[self.pickerView selectedRowInComponent:monthIndex] %self.monthArray.count];
-    NSString *year = self.yearArray[[self.pickerView selectedRowInComponent:yearIndex] %self.yearArray.count];
-    
+    NSString *day = @"01";
+    NSString *month = @"01";
+    NSString *year = @"2019";
     NSString *minutes = @"00";
     NSString *hours = @"00";
+    
+    if (dayIndex > -1 && dayIndex < 62) {
+        day = self.dayArray[[self.pickerView selectedRowInComponent:dayIndex] %self.dayArray.count];
+    }
+    if (monthIndex > -1 && monthIndex < 62) {
+        month = self.monthArray[[self.pickerView selectedRowInComponent:monthIndex] %self.monthArray.count];
+    }
+    if (yearIndex > -1 && yearIndex < 62) {
+        month = self.yearArray[[self.pickerView selectedRowInComponent:yearIndex] %self.yearArray.count];
+    }
+    
+    
     
     if (hoursIndex > -1 && hoursIndex < 62)
     {
@@ -430,7 +450,34 @@
 {
     if(self.determineBlock)
     {
-    self.determineBlock(self, [self getSelectDate]);
+        NSDictionary *dateDict = [self getSelectDate];
+        
+        NSString *yyyy = dateDict[@"yyyy"];
+        NSString *MM = dateDict[@"MM"];
+        NSString *dd = dateDict[@"dd"];
+        NSString *HH = dateDict[@"HH"];
+        NSString *mm = dateDict[@"mm"];
+        NSString *ss = dateDict[@"ss"];
+        if (yyyy.length == 0) {
+            yyyy = @"2019";
+        }
+        if (MM.length == 0) {
+            MM = @"01";
+        }
+        if (dd.length == 0) {
+            dd = @"01";
+        }
+        if (HH.length == 0) {
+            HH = @"12";
+        }
+        if (mm.length == 0) {
+            mm = @"12";
+        }
+        if (ss.length == 0) {
+            ss = @"12";
+        }
+        NSString *dateString = [NSString stringWithFormat:@"%@-%@-%@ %@:%@:%@",yyyy,MM,dd,HH,mm,ss];
+    self.determineBlock(self, [self getSelectDate],[NSDate dateWithString:dateString withFormat:nil]);
     }
     [self hidden];
 }

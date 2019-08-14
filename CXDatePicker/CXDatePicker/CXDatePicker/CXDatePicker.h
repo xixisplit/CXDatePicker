@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @class CXDatePicker;
-typedef void(^determineBlock)(CXDatePicker *datePicker, NSDictionary *selectDate);
+typedef void(^determineBlock)(CXDatePicker *datePicker, NSDictionary *selectDate,NSDate *date);
 typedef void(^cancelBlock)(CXDatePicker *datePicker);
 
 
